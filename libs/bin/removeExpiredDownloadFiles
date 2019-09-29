@@ -1,0 +1,7 @@
+#!/bin/bash
+
+BASEDIR=$(realpath $(dirname $0)/../..)
+
+cd $BASEDIR
+
+php ./artisan command:$(basename $0) $*

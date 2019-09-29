@@ -1,0 +1,51 @@
+{
+  "autorun_dir": "/data/autorun",
+  "share_dir": "/data/export/share",
+  "download_expires": 300,
+  "downloader": {
+    "xoonips3": {
+      "username": "simpf",
+      "password": "secret"
+    },
+    "offline": "/data/download"
+  },
+  "redis": {
+    "host": "localhost",
+    "port": 6379,
+    "password": null
+  },
+  "opennebula": {
+    "endpoint": "http://localhost:2633/RPC2",
+    "username": "oneadmin",
+    "password": "secret"
+  },
+  "ssh": {
+    "localhost": {
+      "hostname": "localhost",
+      "username": "ssadmin",
+      "private_key": "id_rsa.localhost",
+      "passphrase": "secret"
+    },
+    "virtualmachine": {
+      "username": "root",
+      "private_key": "id_rsa.vm",
+      "passphrase": "secret"
+    }
+  },
+  "remote_desktop": {
+    "centos5": {
+      "user": "",
+      "protocol": "vnc",
+      "port": 5901,
+      "password": "secret",
+      "command": "/apps/opt/simpf/startVncServer.sh"
+    },
+    "neurodebian6": {
+      "user": "",
+      "protocol": "vnc",
+      "port": 5901,
+      "password": "secret",
+      "command": "/apps/opt/simpf/startVncServer.sh"
+    }
+  }
+}
