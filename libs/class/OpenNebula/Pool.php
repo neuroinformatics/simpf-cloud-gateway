@@ -62,6 +62,11 @@ abstract class Pool
         foreach ($objs as $obj) {
             $ret[] = new $klass($this->mClient, $obj);
         }
+        usort($ret, function($a, $b) {
+            $aid = $a->getId();
+            $bid = $b->getId();
+            return $aid === $bid ? 0 : ($aid > $bid ? 1 : -1);
+        });
 
         return $ret;
     }
