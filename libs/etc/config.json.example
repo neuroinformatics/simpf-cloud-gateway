@@ -34,17 +34,29 @@
   },
   "remote_desktop": {
     "centos5": {
-      "user": "",
+      "username": "",
       "protocol": "vnc",
       "port": 5901,
       "password": "secret",
+      "sftp": {
+         "username": "simpf",
+         "private_key": "id_rsa.localhost",
+         "passphrase": "secret",
+         "root_directory": "/home/simpf"
+      },
       "command": "/apps/opt/simpf/startVncServer.sh"
     },
     "neurodebian6": {
-      "user": "",
+      "username": "",
       "protocol": "vnc",
       "port": 5901,
       "password": "secret",
+      "sftp": {
+         "username": "simpf",
+         "private_key": "id_rsa.localhost",
+         "passphrase": "secret",
+         "root_directory": "/home/simpf"
+      },
       "command": "/apps/opt/simpf/startVncServer.sh"
     }
   }

@@ -27,9 +27,9 @@ class DesktopManager
         if (!isset($remoteDesktop[$type])) {
             return $response(false, 'Unexpected Error: No configurated type detected.');
         }
-        $password = $remoteDesktop[$type]['password'];
-        $cmd = $remoteDesktop[$type]['command'];
         $protocol = $remoteDesktop[$type]['protocol'];
+        $cmd = $remoteDesktop[$type]['command'];
+        $password = $remoteDesktop[$type]['password'];
 
         // find free virtual machine
         $ip = VirtualMachineManager::getReadyVmIp($type);
@@ -53,7 +53,7 @@ class DesktopManager
         }
 
         // prepare desktop connection session
-        $sid = self::prepareSession($ip, $protocol, $dsize, $password);
+        $sid = self::prepareSession($ip, $type, $dsize);
         if (false === $sid) {
             return $response(false, 'failed to prepare remote desktop connection');
         }
@@ -228,30 +228,35 @@ class DesktopManager
     /**
      * prepare desktop connection session.
      *
-     * @param string $ip       ip address
-     * @param string $protocol connection protocol
-     * @param string $dsize    desktop size
+     * @param string $ip
+     * @param string $type
+     * @param string $dsize
      *
      * @return bool|string guacamole session id
      */
-    private static function prepareSession($ip, $protocol, $dsize, $password)
+    private static function prepareSession($ip, $type, $dsize)
     {
-        $ports = [
+        static $ports = [
             'vnc' => 5901,
             'rdp' => 3389,
         ];
+        $remoteDesktop = Config::get('remote_desktop');
+        $protocol = $remoteDesktop[$type]['protocol'];
+        $password = $remoteDesktop[$type]['password'];
         if (!isset($ports[$protocol])) {
             return false;
         }
         $sshConfig = Config::get('ssh');
         $parameters = [];
-        if ('vnc' == $protocol) {
-            //$parameters['enable-sftp'] = 'true';
-            $parameters['sftp-username'] = 'simpf';
-            $parameters['sftp-private-key'] = Config::getFileContents($sshConfig['localhost']['private_key']);
-            //$parameters['sftp-private-key'] = preg_replace(['/^(:?-----|Proc-Type:|DEK-Info).*$/m', "/\r?\n/"], '', Config::getFileContents($sshConfig['localhost']['private_key']));
-            $parameters['sftp-passphrase'] = $sshConfig['localhost']['passphrase'];
-        } elseif ('rdp' == $protocol) {
+        if (isset($remoteDesktop[$type]['sftp'])) {
+            $sftp = $remoteDesktop[$type]['sftp'];
+            $parameters['enable-sftp'] = 'true';
+            $parameters['sftp-username'] = $sftp['username'];
+            $parameters['sftp-private-key'] = Config::getFileContents($sftp['private_key']);
+            $parameters['sftp-passphrase'] = $sftp['passphrase'];
+            $parameters['sftp-root-directory'] = $sftp['root_directory'];
+        }
+        if ('rdp' == $protocol) {
             $parameters['username'] = 'simpf';
             if (preg_match('/^(\d+)x(\d+)$/', $dsize, $matches)) {
                 $parameters['width'] = $matches[1];
