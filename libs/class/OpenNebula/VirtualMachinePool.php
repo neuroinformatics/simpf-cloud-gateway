@@ -39,6 +39,6 @@ class VirtualMachinePool extends Pool
      */
     public function info($filter, $startId, $endId, $state)
     {
-        return $this->_callInfo('vmpool.info', 'VM', 'VirtualMachine', $filter, $startId, $endId, [$state]);
+        return $this->_callInfo('vmpool.info', 'VM', 'VirtualMachine', [$filter, $startId, $endId, $state]);
     }
 }

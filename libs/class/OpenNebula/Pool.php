@@ -39,17 +39,13 @@ abstract class Pool
      * @param string $method
      * @param string $tag
      * @param string $klass
-     * @param int    $filter
-     * @param int    $startId
-     * @param int    $endId
-     * @param array  $extras
+     * @param array  $params
      *
      * @return array
      */
-    protected function _callInfo($method, $tag, $klass, $filter, $startId, $endId, array $extras = [])
+    protected function _callInfo($method, $tag, $klass, $params = [])
     {
         $klass = __NAMESPACE__.'\\'.$klass;
-        $params = array_merge([$filter, $startId, $endId], $extras);
         $xml = $this->mClient->call($method, $params);
         $res = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
         $json = json_encode($res);
@@ -62,9 +58,10 @@ abstract class Pool
         foreach ($objs as $obj) {
             $ret[] = new $klass($this->mClient, $obj);
         }
-        usort($ret, function($a, $b) {
+        usort($ret, function ($a, $b) {
             $aid = $a->getId();
             $bid = $b->getId();
+
             return $aid === $bid ? 0 : ($aid > $bid ? 1 : -1);
         });
 

@@ -3,22 +3,23 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use SimPF\Utility\DesktopManager;
 
-class TestCommand extends Command
+class TerminateReadyVmsCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:test';
+    protected $signature = 'command:terminateReadyVms {hostname}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command Test description';
+    protected $description = 'Terminate ready virtual machies';
 
     /**
      * Create a new command instance.
@@ -35,5 +36,14 @@ class TestCommand extends Command
      */
     public function handle()
     {
+        $hostname = $this->argument('hostname');
+        $res = DesktopManager::terminateReadyVms($hostname);
+        if (false === $res['status']) {
+            $this->error($res['message']);
+
+            return 1;
+        }
+
+        return 0;
     }
 }

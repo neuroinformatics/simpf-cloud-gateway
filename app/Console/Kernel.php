@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         Commands\PrepareSharedDirectoryCommand::class,
         Commands\RestartWorkerVmsCommand::class,
         Commands\RemoveExpiredDownloadFilesCommand::class,
+        Commands\TerminateReadyVmsCommand::class,
     ];
 
     /**

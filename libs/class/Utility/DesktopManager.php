@@ -198,6 +198,34 @@ class DesktopManager
     }
 
     /**
+     * terminate ready virtual machines.
+     *
+     * @param string $hostname
+     *
+     * @return ['status' => bool, 'message' => string]
+     */
+    public static function terminateReadyVms($hostname)
+    {
+        $lock = 'session';
+        $response = function ($status, $message, $lock) {
+            '' !== $lock && Mutex::release($lock);
+
+            return ['status' => $status, 'message' => $message];
+        };
+
+        if (Mutex::lock($lock, 10)) {
+            $ips = VirtualMachineManager::terminateReadyVms($hostname);
+            foreach ($ips as $ip) {
+                SessionManager::deleteByHostname($ip);
+            }
+
+            return $response(true, '', $lock);
+        }
+
+        return $response(false, 'Unexpected Error: failed to lock mutex', '');
+    }
+
+    /**
      * prepare desktop connection session.
      *
      * @param string $ip       ip address
@@ -215,8 +243,15 @@ class DesktopManager
         if (!isset($ports[$protocol])) {
             return false;
         }
+        $sshConfig = Config::get('ssh');
         $parameters = [];
-        if ('rdp' == $protocol) {
+        if ('vnc' == $protocol) {
+            //$parameters['enable-sftp'] = 'true';
+            $parameters['sftp-username'] = 'simpf';
+            $parameters['sftp-private-key'] = Config::getFileContents($sshConfig['localhost']['private_key']);
+            //$parameters['sftp-private-key'] = preg_replace(['/^(:?-----|Proc-Type:|DEK-Info).*$/m', "/\r?\n/"], '', Config::getFileContents($sshConfig['localhost']['private_key']));
+            $parameters['sftp-passphrase'] = $sshConfig['localhost']['passphrase'];
+        } elseif ('rdp' == $protocol) {
             $parameters['username'] = 'simpf';
             if (preg_match('/^(\d+)x(\d+)$/', $dsize, $matches)) {
                 $parameters['width'] = $matches[1];

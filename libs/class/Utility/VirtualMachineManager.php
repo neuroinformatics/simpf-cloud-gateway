@@ -5,6 +5,8 @@ namespace SimPF\Utility;
 use SimPF\Config;
 use SimPF\Mutex;
 use SimPF\OpenNebula\Client;
+use SimPF\OpenNebula\Host;
+use SimPF\OpenNebula\HostPool;
 use SimPF\OpenNebula\Template;
 use SimPF\OpenNebula\TemplatePool;
 use SimPF\OpenNebula\VirtualMachine;
@@ -72,6 +74,46 @@ class VirtualMachineManager
         }
 
         return $ret;
+    }
+
+    /**
+     * terminate ready vms.
+     *
+     * @param string $hostname hostname
+     *
+     * @return string[]
+     */
+    public static function terminateReadyVms($hostname)
+    {
+        $name = 'opennebula';
+        $config = Config::get($name);
+        $client = new Client($config);
+        $ips = [];
+        if (Mutex::lock($name, 10)) {
+            $hostpool = new HostPool($client);
+            $hostis = $hostpool->infoAll();
+            foreach ($hostis as $hosti) {
+                $hostid = $hosti->getId();
+                $host = Host::getInstance($client, $hostid);
+                if ($hostname != $host->getHostname()) {
+                    continue;
+                }
+                $vmids = $host->getVms();
+                foreach ($vmids as $vmid) {
+                    $vm = VirtualMachine::getInstance($client, $vmid);
+                    $state = $vm->getState();
+                    $lcmState = $vm->getLcmState();
+                    $vmState = $vm->getUserTemplate('SIMPF_VM_STATE');
+                    if ('POWEROFF' == $state || ('ACTIVE' == $state && 'RUNNING' == $lcmState && 'READY' == $vmState)) {
+                        $ips[] = $vm->getContext('ETH0_IP');
+                        $vm->terminate();
+                    }
+                }
+            }
+            Mutex::release($name);
+        }
+
+        return $ips;
     }
 
     /**

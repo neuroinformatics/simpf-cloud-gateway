@@ -146,6 +146,32 @@ class VirtualMachine extends PoolElement
     }
 
     /**
+     * get hostname.
+     *
+     * @return string
+     */
+    public function getHostname()
+    {
+        $history = $this->_getProperty(['HISTORY_RECORDS', 'HISTORY']);
+        if (null === $history) {
+            return '';
+        } elseif (is_array($history)) {
+            usort($history, function ($a, $b) {
+                $aseq = $a->SEQ;
+                $bseq = $b->SEQ;
+
+                return $aseq == $bseq ? 0 : ($aseq > $bseq ? 1 : -1);
+            });
+            $history = array_pop($history);
+        }
+        if (!property_exists($history, 'HOSTNAME')) {
+            return '';
+        }
+
+        return $history->HOSTNAME;
+    }
+
+    /**
      * update user template.
      *
      * @param array $contents
