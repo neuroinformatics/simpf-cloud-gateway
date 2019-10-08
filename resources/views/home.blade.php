@@ -124,7 +124,7 @@ function simpf_error(message) {
 
 function simpf_desktop_connect(sid, token, dataSource) {
   setTimeout(function() {
-    window.location.href = 'https://simpf.med.kanazawa-u.ac.jp/desktop/?username=' + sid;
+    window.location.href = 'https://simpf.med.kanazawa-u.ac.jp/desktop/#/client?token=' + token;
   }, 1000);
 }
 
