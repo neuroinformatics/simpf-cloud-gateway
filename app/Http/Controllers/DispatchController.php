@@ -10,7 +10,7 @@ class DispatchController extends Controller
     public function __invoke(Request $request)
     {
         $resolutions = [
-            '1280x1024', '1024x768', '800x600', // 4x3
+            '1600x1200', '1280x1024', '1024x768', '800x600', // 4x3
             '1920x1080', '1600x900', '1366x768', // 16x9
             '3840x2160', // 4k
         ];
