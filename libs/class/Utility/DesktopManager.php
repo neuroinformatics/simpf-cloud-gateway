@@ -5,6 +5,7 @@ namespace SimPF\Utility;
 use SimPF\Config;
 use SimPF\Mutex;
 use SimPF\Guacamole\SessionManager;
+use Illuminate\Support\Facades\Log;
 
 class DesktopManager
 {
@@ -33,6 +34,7 @@ class DesktopManager
 
         // find free virtual machine
         $ip = VirtualMachineManager::getReadyVmIp($type);
+        Log::info('Dispatch VM : '.$ip);
         if (false === $ip) {
             return $response(false, 'No free virtual machine available, please try again later.');
         }
@@ -43,6 +45,7 @@ class DesktopManager
 
             return $response(false, 'Failed to download contents.');
         }
+        Log::info('- prepared shared directory:'.$url);
         if ('vnc' == $protocol) {
             // start vnc server and run autorun script.
             if (false === SshConnection::runOnVirtualMachine($ip, $cmd, $password)) {
@@ -50,10 +53,12 @@ class DesktopManager
 
                 return $response(false, 'Failed to run vnc server.');
             }
+            Log::info('- run vnc server: '.$cmd);
         }
 
         // prepare desktop connection session
         $sid = self::prepareSession($ip, $type, $dsize);
+        Log::info('- prepared session: '.$sid);
         if (false === $sid) {
             return $response(false, 'failed to prepare remote desktop connection');
         }
