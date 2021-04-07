@@ -71,15 +71,13 @@ class SshConnection
      * @param string $privatekey
      * @param string $passphrase
      *
-     * return \phpseclib\Net\SSH2|null
+     * return \phpseclib3\Net\SSH2|null
      */
     private static function getConnection($hostname, $username, $privatekey, $passphrase)
     {
         try {
-            $ssh = new \phpseclib\Net\SSH2($hostname);
-            $key = new \phpseclib\Crypt\RSA();
-            $key->setPassword($passphrase);
-            $key->loadKey($privatekey);
+            $ssh = new \phpseclib3\Net\SSH2($hostname);
+            $key = \phpseclib3\Crypt\PublicKeyLoader::load($privatekey, $passphrase);
             if (!$ssh->login($username, $key)) {
                 return null;
             }
