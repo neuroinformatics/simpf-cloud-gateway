@@ -1,0 +1,4 @@
+@import 'normalize.css/normalize.css';
+@import '@fortawesome/fontawesome-free/css/fontawesome.css';
+@import 'spinkit/spinkit.css';
+@import './modal.css';

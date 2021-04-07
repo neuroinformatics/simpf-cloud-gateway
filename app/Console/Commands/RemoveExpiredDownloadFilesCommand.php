@@ -24,6 +24,8 @@ class RemoveExpiredDownloadFilesCommand extends Command
 
     /**
      * Create a new command instance.
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -33,7 +35,7 @@ class RemoveExpiredDownloadFilesCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
     public function handle()
     {
@@ -51,5 +53,7 @@ class RemoveExpiredDownloadFilesCommand extends Command
 
             return 1;
         }
+
+        return 0;
     }
 }

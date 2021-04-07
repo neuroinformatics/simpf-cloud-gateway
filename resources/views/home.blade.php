@@ -4,18 +4,16 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Simulation Platform Cloud Gateway Service</title>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="css/modal.css">
-        <link rel="stylesheet" href="css/loading.css">
+        <link rel="stylesheet" href="css/app.css">
+
         <style>
             html, body {
                 background-color: #fff;
@@ -111,6 +109,7 @@
     </div>
   </div>
 </div>
+<script src="{{ asset('/js/app.js') }}"></script>
 <script>
 (function($) {
 $(function() {
@@ -134,6 +133,7 @@ function simpf_desktop_login(sid) {
     type: 'POST',
     url: endpoint,
     data: {'username': sid, 'password': ''},
+    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
   }).done(function (response) {
     simpf_desktop_connect(sid, response.authToken, response.dataSource);
   }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
@@ -149,7 +149,8 @@ function simpf_dispatch(url, type, dsize) {
   $.ajax({
     type: 'GET',
     url: endpoint,
-    data: {'url': url, 'type': type, 'dsize': dsize}
+    data: {'url': url, 'type': type, 'dsize': dsize},
+    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
   }).done(function (response) {
     if ('ERROR' == response.status) {
       simpf_error(response.result);

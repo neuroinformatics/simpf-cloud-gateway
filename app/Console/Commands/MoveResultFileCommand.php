@@ -24,6 +24,8 @@ class MoveResultFileCommand extends Command
 
     /**
      * Create a new command instance.
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -33,7 +35,7 @@ class MoveResultFileCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
     public function handle()
     {
@@ -54,5 +56,7 @@ class MoveResultFileCommand extends Command
                 return 1;
             }
         }
+
+        return 0;
     }
 }

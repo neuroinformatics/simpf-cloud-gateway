@@ -10,9 +10,14 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.3",
         "axios": "^0.21",
+        "jquery": "^3.6.0",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
-        "postcss": "^8.1.14"
+        "normalize.css": "^8.0.1",
+        "postcss": "^8.1.14",
+        "postcss-import": "^14.0.1",
+        "spinkit": "^2.0.1"
     }
 }

@@ -23,6 +23,8 @@ class TerminateReadyVmsCommand extends Command
 
     /**
      * Create a new command instance.
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -32,7 +34,7 @@ class TerminateReadyVmsCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
     public function handle()
     {

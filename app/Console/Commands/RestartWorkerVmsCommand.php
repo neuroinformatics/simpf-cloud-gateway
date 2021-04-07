@@ -23,6 +23,8 @@ class RestartWorkerVmsCommand extends Command
 
     /**
      * Create a new command instance.
+     *
+     * return void
      */
     public function __construct()
     {
@@ -32,13 +34,17 @@ class RestartWorkerVmsCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
     public function handle()
     {
         $ret = DesktopManager::restartWorkerVms();
         if (false == $ret['status']) {
             $this->error($ret['message']);
+
+            return 1;
         }
+
+        return 0;
     }
 }
