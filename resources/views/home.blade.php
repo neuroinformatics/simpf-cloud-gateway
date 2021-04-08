@@ -7,12 +7,11 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Simulation Platform Cloud Gateway Service</title>
+        <!-- Styles -->
+        <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
-        <link rel="stylesheet" href="css/app.css">
 
         <style>
             html, body {
@@ -90,19 +89,19 @@
     <p id="modal-message-panel">
       <span id="modal-message"></span>
     </p>
-    <div id="modal-loading" class="sk-fading-circle">
-      <div class="sk-circle1 sk-circle"></div>
-      <div class="sk-circle2 sk-circle"></div>
-      <div class="sk-circle3 sk-circle"></div>
-      <div class="sk-circle4 sk-circle"></div>
-      <div class="sk-circle5 sk-circle"></div>
-      <div class="sk-circle6 sk-circle"></div>
-      <div class="sk-circle7 sk-circle"></div>
-      <div class="sk-circle8 sk-circle"></div>
-      <div class="sk-circle9 sk-circle"></div>
-      <div class="sk-circle10 sk-circle"></div>
-      <div class="sk-circle11 sk-circle"></div>
-      <div class="sk-circle12 sk-circle"></div>
+    <div id="modal-loading" class="sk-circle-fade">
+      <div class="sk-circle-fade-dot"></div>
+      <div class="sk-circle-fade-dot"></div>
+      <div class="sk-circle-fade-dot"></div>
+      <div class="sk-circle-fade-dot"></div>
+      <div class="sk-circle-fade-dot"></div>
+      <div class="sk-circle-fade-dot"></div>
+      <div class="sk-circle-fade-dot"></div>
+      <div class="sk-circle-fade-dot"></div>
+      <div class="sk-circle-fade-dot"></div>
+      <div class="sk-circle-fade-dot"></div>
+      <div class="sk-circle-fade-dot"></div>
+      <div class="sk-circle-fade-dot"></div>
     </div>
     <div id="modal-download">
       <button id="modal-download-button"><i class="fas fa-cloud-download-alt" aria-hidden="true"></i>  Download</button>

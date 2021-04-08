@@ -29,6 +29,9 @@
   font-size: 1.8rem;
   text-align: center;
 }
+#modal-loading {
+  margin: 1.8rem auto;
+}
 #modal-download {
   text-align: center;
   display: none;
